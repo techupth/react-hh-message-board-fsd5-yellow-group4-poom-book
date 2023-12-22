@@ -1,4 +1,21 @@
+import { useState } from "react";
+
 function MessageBoard() {
+  const [messageInput, setMessageInput] = useState("");
+  const [todo, setTodo] = useState([]);
+
+  const addTodo = () => {
+    const newTodo = [...todo];
+    newTodo.push(messageInput);
+    setTodo(newTodo);
+  };
+
+  const deleteTodo = (todoIndex) => {
+    const newTodo = [...todo];
+    newTodo.splice(todoIndex, 1);
+    setTodo(newTodo);
+  };
+
   return (
     <div className="app-wrapper">
       <h1 class="app-title">Message board</h1>
@@ -9,15 +26,30 @@ function MessageBoard() {
             name="message-text"
             type="text"
             placeholder="Enter message here"
+            onChange={(e) => {
+              return setMessageInput(e.target.value);
+            }}
+            value={messageInput}
           />
         </label>
-        <button className="submit-message-button">Submit</button>
+        <button className="submit-message-button" onClick={addTodo}>
+          Submit
+        </button>
       </div>
       <div class="board">
-        <div className="message">
-          <h1>Hello all ! This is first message.</h1>
-          <button className="delete-button">x</button>
-        </div>
+        {todo.map((item, index) => {
+          return (
+            <div key={index} className="message">
+              <h1>{item}</h1>
+              <button
+                className="delete-button"
+                onClick={() => deleteTodo(index)}
+              >
+                x
+              </button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
